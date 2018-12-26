@@ -1,5 +1,4 @@
 defmodule Sparklinex.ChartData do
-
   def normalize_data(data, type) do
     min = min_value(data, type)
     max = max_value(data, type)
@@ -13,12 +12,12 @@ defmodule Sparklinex.ChartData do
   defp normalize_data(data, _min, _max, :bullet), do: data
 
   defp normalize_data(data, min, max, _type) do
-    Enum.map(data, &(normalize_value(&1, min, max)))
+    Enum.map(data, &normalize_value(&1, min, max))
   end
 
-  defp normalize_value(_, min, min), do: min
-  defp normalize_value(value, min, max) do
+  def normalize_value(_, min, min), do: min
+
+  def normalize_value(value, min, max) do
     (value - min) / (max - min) * 100
   end
-
 end

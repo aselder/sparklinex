@@ -52,28 +52,76 @@ defmodule Mix.Tasks.ExampleTest do
     basic_graphs = [:smooth]
 
     basic_graphs
-    |> Enum.each(
-         fn graph_type ->
-           quick_graph("#{graph_type}", %{type: graph_type})
-           quick_graph("labeled_#{graph_type}", %{type: graph_type, label: "Glucose"})
-         end
-       )
+    |> Enum.each(fn graph_type ->
+      quick_graph("#{graph_type}", %{type: graph_type})
+      quick_graph("labeled_#{graph_type}", %{type: graph_type, label: "Glucose", has_last: true})
+    end)
+
+    quick_graph("smooth_colored", %{type: :smooth, line_color: "purple"})
+
+    quick_graph("smooth_with_target", %{
+      type: :smooth,
+      target: 50,
+      target_color: "#999999",
+      line_color: "#6699cc",
+      underneath_color: "#ebf3f6"
+    })
+
+    quick_graph("smooth_underneath_color", %{
+      type: :smooth,
+      line_color: "#6699cc",
+      underneath_color: "#ebf3f6"
+    })
+
+    [100, 90, 95, 99, 80, 90]
+    |> graph(%{
+      type: :smooth,
+      line_color: "#6699cc",
+      underneath_color: "#ebf3f6"
+    })
+    |> graph_to_file("#{@output_dir}/smooth_similar_nonzero_values.png")
+
+    quick_graph("standard_deviation", %{
+      type: :smooth,
+      height: 100,
+      line_color: "#666",
+      has_std_dev: true,
+      std_dev_color: "#cccccc"
+    })
+
+    quick_graph("standard_deviation_tall", %{
+      type: :smooth,
+      height: 300,
+      line_color: "#666",
+      has_std_dev: true,
+      std_dev_color: "#cccccc"
+    })
+
+    quick_graph("standard_deviation_short", %{
+      type: :smooth,
+      height: 20,
+      line_color: "#666",
+      has_std_dev: true,
+      std_dev_color: "#cccccc"
+    })
 
     write_html()
   end
 
-  def quick_graph(name, options) do
+  defp quick_graph(name, options) do
     @test_data
     |> graph(options)
     |> graph_to_file("#{@output_dir}/#{name}.png")
   end
 
   defp write_html do
-    {:ok, file} = File.open "test/actual/index.html", [:write]
+    {:ok, file} = File.open("test/actual/index.html", [:write])
     IO.binwrite(file, html_header())
     IO.binwrite(file, table_header())
+
     Path.wildcard("test/expected/*")
     |> Enum.each(fn test_file -> IO.binwrite(file, table_row(test_file)) end)
+
     IO.binwrite(file, close())
     File.close(file)
   end
@@ -82,7 +130,9 @@ defmodule Mix.Tasks.ExampleTest do
     """
           <tr>
             <td class="first_column">#{image_tag("../../#{file}")}</td>
-            <td class="last_column">#{image_tag("../../#{String.replace(file, "expected", "actual")}")}</td>
+            <td class="last_column">#{
+      image_tag("../../#{String.replace(file, "expected", "actual")}")
+    }</td>
           </tr>
     """
   end
@@ -132,6 +182,4 @@ defmodule Mix.Tasks.ExampleTest do
       </html>
     """
   end
-
 end
-
