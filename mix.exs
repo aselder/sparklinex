@@ -7,6 +7,8 @@ defmodule Sparklinex.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
+      description: description(),
+      package: package(),
       deps: deps()
     ]
   end
@@ -23,7 +25,22 @@ defmodule Sparklinex.MixProject do
     [
       {:mogrify, "~> 0.7.0"},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
+  end
+
+  defp package do
+    [
+      maintainers: ["Andrew Selder"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/aselder/sparklinex"}
+    ]
+  end
+
+  defp description do
+    """
+    Library for generate PNG sparkline graphs.
+    """
   end
 end
