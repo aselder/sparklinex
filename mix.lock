@@ -9,6 +9,6 @@
   "makeup": {:hex, :makeup, "0.6.0", "e0fd985525e8d42352782bd76253105fbab0a783ac298708ca9020636c9568af", [:mix], [{:nimble_parsec, "~> 0.5.0", [hex: :nimble_parsec, repo: "hexpm", optional: false]}], "hexpm"},
   "makeup_elixir": {:hex, :makeup_elixir, "0.11.0", "aa3446f67356afa5801618867587a8863f176f9c632fb62b20f49bd1ea335e8a", [:mix], [{:makeup, "~> 0.6", [hex: :makeup, repo: "hexpm", optional: false]}], "hexpm"},
   "mogrify": {:hex, :mogrify, "0.7.0", "f7af9a42a3b17818c9841dcfa12f7416c4c34078872eb79b2dc55e15670c3a7f", [:mix], [], "hexpm"},
-  "mogrify_draw": {:hex, :mogrify_draw, "0.1.1", "858e0eb209bad3d408cfce4845e49e049395f2ae80c0802ecf0b0b8c1b954207", [:mix], [{:mogrify, "~> 0.5.4", [hex: :mogrify, repo: "hexpm", optional: false]}], "hexpm"},
   "nimble_parsec": {:hex, :nimble_parsec, "0.5.0", "90e2eca3d0266e5c53f8fbe0079694740b9c91b6747f2b7e3c5d21966bba8300", [:mix], [], "hexpm"},
+  "statistics": {:hex, :statistics, "0.5.1", "963c1d3a56d504a5559b469614203bcd366aac94e08515b61b3b239638ee8873", [:mix], [], "hexpm"},
 }

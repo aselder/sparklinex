@@ -1,5 +1,4 @@
 defmodule Sparklinex.Smooth.Options do
-
   defstruct step: 2,
             height: 14,
             background_color: "white",
@@ -15,5 +14,4 @@ defmodule Sparklinex.Smooth.Options do
             target: nil,
             target_color: "white",
             underneath_color: nil
-
 end

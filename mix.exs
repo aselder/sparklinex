@@ -4,7 +4,7 @@ defmodule Sparklinex.MixProject do
   def project do
     [
       app: :sparklinex,
-      version: "0.1.0",
+      version: "0.2.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -24,6 +24,7 @@ defmodule Sparklinex.MixProject do
   defp deps do
     [
       {:mogrify, "~> 0.7.0"},
+      {:statistics, "~> 0.5.0"},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev}
@@ -34,7 +35,9 @@ defmodule Sparklinex.MixProject do
     [
       maintainers: ["Andrew Selder"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/aselder/sparklinex"}
+      links: %{
+        "GitHub" => "https://github.com/aselder/sparklinex"
+      }
     ]
   end
 
