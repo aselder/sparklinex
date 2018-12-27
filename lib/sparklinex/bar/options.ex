@@ -7,5 +7,6 @@ defmodule Sparklinex.Bar.Options do
             target_color: "white",
             above_color: "red",
             below_color: "grey",
-            upper: 50
+            upper: 50,
+            width: nil
 end

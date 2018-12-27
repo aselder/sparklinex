@@ -37,11 +37,9 @@ defmodule Sparklinex do
   @doc """
   """
   def graph_to_binary(img = %Mogrify.Image{}) do
-    buffered_image =
-      img
-      |> Mogrify.custom("stdout", "png:-")
-      |> Mogrify.create(buffer: true)
-
-    buffered_image.buffer
+    img
+    |> Mogrify.custom("stdout", "png:-")
+    |> Mogrify.create(buffer: true)
+    |> Map.fetch!(:buffer)
   end
 end

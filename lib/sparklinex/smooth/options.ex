@@ -13,5 +13,6 @@ defmodule Sparklinex.Smooth.Options do
             std_dev_color: "#efefef",
             target: nil,
             target_color: "white",
-            underneath_color: nil
+            underneath_color: nil,
+            width: nil
 end
