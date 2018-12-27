@@ -27,11 +27,10 @@ and display them side by side with known exemplars.
 This project is currently just getting started.
 
 #### Done
-- Basic smooth graphs
+- Smooth graphs
+- Bar graphs
 
 #### Todo
-- Other options for smooth graph
-- Bar graphs
 - Pie graphs
 - Whisker graphs 
 - Area graphs

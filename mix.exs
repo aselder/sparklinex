@@ -4,7 +4,7 @@ defmodule Sparklinex.MixProject do
   def project do
     [
       app: :sparklinex,
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -43,7 +43,7 @@ defmodule Sparklinex.MixProject do
 
   defp description do
     """
-    Library for generate PNG sparkline graphs.
+    Library for generating PNG sparkline graphs.
     """
   end
 end
