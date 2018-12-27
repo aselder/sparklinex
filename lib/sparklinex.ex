@@ -10,6 +10,7 @@ defmodule Sparklinex do
 
     case type do
       :smooth -> smooth(data_points, graph_opts)
+      :bar -> bar(data_points, graph_opts)
     end
   end
 
@@ -17,6 +18,12 @@ defmodule Sparklinex do
   """
   def smooth(data_points, opts \\ %{}) do
     Sparklinex.Smooth.draw(data_points, struct(%Sparklinex.Smooth.Options{}, opts))
+  end
+
+  @doc """
+  """
+  def bar(data_points, opts \\ %{}) do
+    Sparklinex.Bar.draw(data_points, struct(%Sparklinex.Bar.Options{}, opts))
   end
 
   @doc """
