@@ -131,7 +131,7 @@ defmodule Mix.Tasks.ExampleTest do
         type: :smooth,
         has_min: true,
         has_max: true,
-        has_last: true,
+        has_last: true
       }
     )
 
@@ -166,6 +166,51 @@ defmodule Mix.Tasks.ExampleTest do
       bar_width: 3
     })
     |> graph_to_file("#{@output_dir}/bar_extreme_values.png")
+
+    # Bullet graph tests
+    %{value: 85, good: 100}
+    |> graph(%{
+      type: :bullet,
+      target: 80,
+      height: 15
+    })
+    |> graph_to_file("#{@output_dir}/bullet_basic.png")
+
+    %{value: 85, good: 100, bad: 60, satisfactory: 80}
+    |> graph(%{
+      type: :bullet,
+      target: 90,
+      height: 15
+    })
+    |> graph_to_file("#{@output_dir}/bullet_full_featured.png")
+
+    %{value: 85, good: 100, bad: 60, satisfactory: 80}
+    |> graph(%{
+      type: :bullet,
+      target: 90,
+      height: 15,
+      bad_color: "#c3e3bf",
+      satisfactory_color: "#96cf90",
+      good_color: "#6ab162"
+    })
+    |> graph_to_file("#{@output_dir}/bullet_colorful.png")
+
+    %{value: 85, good: 100, bad: 60, satisfactory: 80}
+    |> graph(%{
+      type: :bullet,
+      target: 90,
+      height: 30
+    })
+    |> graph_to_file("#{@output_dir}/bullet_tall.png")
+
+    %{value: 85, good: 100, bad: 60, satisfactory: 80}
+    |> graph(%{
+      type: :bullet,
+      target: 90,
+      height: 15,
+      width: 200
+    })
+    |> graph_to_file("#{@output_dir}/bullet_wide.png")
 
     # Create the HTML report
     write_html()

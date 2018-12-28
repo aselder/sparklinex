@@ -29,12 +29,12 @@ This project is currently just getting started.
 #### Done
 - Smooth graphs
 - Bar graphs
+- Bullet graphs
 
 #### Todo
 - Pie graphs
 - Whisker graphs 
 - Area graphs
-- Bullet graphs
 - Discrete graphs
 - HexDocs
 - TypeDocs
