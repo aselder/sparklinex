@@ -135,6 +135,11 @@ defmodule Mix.Tasks.ExampleTest do
       }
     )
 
+    # Test smooth sparkline with extreme value
+    [0, 0, 0, 0]
+    |> graph(%{type: :smooth})
+    |> graph_to_file("#{@output_dir}/zeros.png")
+
     # More in depth bar graphs
 
     quick_graph(
