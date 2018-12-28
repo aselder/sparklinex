@@ -125,6 +125,16 @@ defmodule Mix.Tasks.ExampleTest do
       }
     )
 
+    quick_graph(
+      "smooth_min_max",
+      %{
+        type: :smooth,
+        has_min: true,
+        has_max: true,
+        has_last: true,
+      }
+    )
+
     # More in depth bar graphs
 
     quick_graph(
