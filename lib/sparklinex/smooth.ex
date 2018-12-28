@@ -1,38 +1,26 @@
 defmodule Sparklinex.Smooth do
-  alias Sparklinex.Smooth.Options
-  alias Sparklinex.MogrifyDraw
   alias Sparklinex.ChartData
+  alias Sparklinex.MogrifyDraw
+  alias Sparklinex.Smooth.Options
 
-  def draw(data, chart_spec = %Options{}) do
-    width = width(data, chart_spec)
+  def draw(
+        data,
+        spec = %Options{height: height, background_color: bk_color, line_color: line_color}
+      ) do
+    spec_with_width = %{spec | width: width(data, spec)}
     normalized_data = ChartData.normalize_data(data, :smooth)
 
-    coords =
-      normalized_data
-      |> create_coords(chart_spec.height, chart_spec.step)
-
-    canvas = MogrifyDraw.create_canvas(width, chart_spec.height, chart_spec.background_color)
+    coords = create_coords(normalized_data, spec_with_width)
+    canvas = MogrifyDraw.create_canvas(spec_with_width.width, height, bk_color)
 
     canvas
-    |> draw_std_dev_box(
-      chart_spec.has_std_dev,
-      normalized_data,
-      chart_spec.height,
-      width,
-      chart_spec.std_dev_color
-    )
-    |> MogrifyDraw.set_line_color(chart_spec.line_color)
-    |> plot_data(coords, chart_spec.underneath_color, chart_spec.height, width)
-    |> draw_target_line(
-      chart_spec.target,
-      chart_spec.target_color,
-      chart_spec.height,
-      width,
-      data
-    )
-    |> draw_max(chart_spec.has_max, coords, chart_spec.max_color)
-    |> draw_min(chart_spec.has_min, coords, chart_spec.min_color)
-    |> draw_last(chart_spec.has_last, coords, chart_spec.last_color)
+    |> draw_std_dev_box(normalized_data, spec_with_width)
+    |> MogrifyDraw.set_line_color(line_color)
+    |> plot_data(coords, spec_with_width)
+    |> draw_target_line(data, spec_with_width)
+    |> draw_max(coords, spec_with_width)
+    |> draw_min(coords, spec_with_width)
+    |> draw_last(coords, spec_with_width)
   end
 
   defp width(data, %Options{step: step}) do
@@ -45,7 +33,7 @@ defmodule Sparklinex.Smooth do
 
   defp each_pair([_p1 | _rest]), do: []
 
-  defp create_coords(data, height, step) do
+  defp create_coords(data, %Options{step: step, height: height}) do
     data
     |> Enum.with_index()
     |> Enum.map(fn {y, x} -> {x * step, height - 3 - y / (101.0 / (height - 4))} end)
@@ -65,15 +53,20 @@ defmodule Sparklinex.Smooth do
     |> List.flatten()
   end
 
-  defp plot_data(canvas, coords, nil, _height, _width) do
+  defp plot_data(canvas, coords, %Options{underneath_color: nil}) do
     MogrifyDraw.draw_lines(canvas, each_pair(coords))
   end
 
-  defp plot_data(canvas, coords, underneath_color, height, width) do
-    MogrifyDraw.polygon(canvas, poly_coords(coords, height, width), underneath_color)
+  defp plot_data(canvas, coords, %Options{width: width, underneath_color: color, height: height}) do
+    MogrifyDraw.polygon(canvas, poly_coords(coords, height, width), color)
   end
 
-  defp draw_std_dev_box(canvas, true, data, height, width, color) do
+  defp draw_std_dev_box(canvas, data, %Options{
+         height: height,
+         has_std_dev: true,
+         std_dev_color: color,
+         width: width
+       }) do
     std_dev = Statistics.stdev(data)
     mid = Enum.sum(data) / length(data)
     lower = height - 3 - (mid - std_dev) / (101.0 / (height - 4))
@@ -84,47 +77,52 @@ defmodule Sparklinex.Smooth do
     |> MogrifyDraw.rectangle({0, lower}, {width, upper}, color)
   end
 
-  defp draw_std_dev_box(canvas, false, _data, _height, _width, _color) do
+  defp draw_std_dev_box(canvas, _data, %Options{has_std_dev: false}) do
     canvas
   end
 
-  defp draw_target_line(canvas, nil, _target_color, _height, _width, _data) do
+  defp draw_target_line(canvas, _data, %Options{target: nil}) do
     canvas
   end
 
-  defp draw_target_line(canvas, target_value, target_color, height, width, data) do
-    norm_value = ChartData.normalize_value(target_value, Enum.min(data), Enum.max(data))
+  defp draw_target_line(canvas, data, %Options{
+         target: target,
+         target_color: color,
+         height: height,
+         width: width
+       }) do
+    norm_value = ChartData.normalize_value(target, Enum.min(data), Enum.max(data))
     adjusted_target_value = height - 3 - norm_value / (101.0 / (height - 4))
 
     canvas
-    |> MogrifyDraw.set_line_color(target_color)
+    |> MogrifyDraw.set_line_color(color)
     |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}})
   end
 
-  defp draw_min(canvas, true, coords, color) do
+  defp draw_min(canvas, coords, %Options{has_min: true, min_color: color}) do
     min_point = Enum.min_by(coords, fn {_x, y} -> y end)
     MogrifyDraw.draw_box(canvas, min_point, 2, color)
   end
 
-  defp draw_min(canvas, false, _coords, _color) do
+  defp draw_min(canvas, _coords, %Options{has_min: false}) do
     canvas
   end
 
-  defp draw_max(canvas, true, coords, color) do
+  defp draw_max(canvas, coords, %Options{has_max: true, max_color: color}) do
     max_point = Enum.max_by(coords, fn {_x, y} -> y end)
     MogrifyDraw.draw_box(canvas, max_point, 2, color)
   end
 
-  defp draw_max(canvas, false, _coords, _color) do
+  defp draw_max(canvas, _coords, %Options{has_max: false}) do
     canvas
   end
 
-  defp draw_last(canvas, true, coords, color) do
+  defp draw_last(canvas, coords, %Options{has_last: true, last_color: color}) do
     last_point = List.last(coords)
     MogrifyDraw.draw_box(canvas, last_point, 2, color)
   end
 
-  defp draw_last(canvas, false, _coords, _color) do
+  defp draw_last(canvas, _coords, %Options{has_last: false}) do
     canvas
   end
 end
