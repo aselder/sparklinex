@@ -39,8 +39,7 @@ defmodule Sparklinex.Bar do
     left_edge = index * (1 + step) + 1
 
     canvas
-    |> MogrifyDraw.set_line_color(rectangle_color(value, spec))
-    |> MogrifyDraw.draw_line({{left_edge, height}, {left_edge, height_from_top}})
+    |> MogrifyDraw.draw_line({{left_edge, height}, {left_edge, height_from_top}}, rectangle_color(value, spec))
   end
 
   defp draw_rectangle(
@@ -86,7 +85,6 @@ defmodule Sparklinex.Bar do
     adjusted_target_value = height - 3 - norm_value / (101.0 / (height - 4))
 
     canvas
-    |> MogrifyDraw.set_line_color(color)
-    |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}})
+    |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}}, color)
   end
 end

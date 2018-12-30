@@ -95,8 +95,7 @@ defmodule Sparklinex.Smooth do
     adjusted_target_value = height - 3 - norm_value / (101.0 / (height - 4))
 
     canvas
-    |> MogrifyDraw.set_line_color(color)
-    |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}})
+    |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}}, color)
   end
 
   defp draw_min(canvas, coords, %Options{has_min: true, min_color: color}) do

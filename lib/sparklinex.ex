@@ -1,4 +1,6 @@
 defmodule Sparklinex do
+  alias Sparklinex.{Smooth, Bar, Bullet, Whisker}
+
   @moduledoc """
   Documentation for Sparklinex.
   """
@@ -9,28 +11,35 @@ defmodule Sparklinex do
     graph_opts = Map.drop(opts, [:type])
 
     case type do
-      :smooth -> smooth(data_points, graph_opts)
-      :bar -> bar(data_points, graph_opts)
-      :bullet -> bullet(data_points, graph_opts)
+      :smooth -> smooth(data_points, struct(%Smooth.Options{}, graph_opts))
+      :bar -> bar(data_points, struct(%Bar.Options{}, graph_opts))
+      :bullet -> bullet(data_points, struct(%Bullet.Options{}, graph_opts))
+      :whisker -> whisker(data_points, struct(%Whisker.Options{}, graph_opts))
     end
   end
 
   @doc """
   """
-  def smooth(data_points, opts \\ %{}) do
-    Sparklinex.Smooth.draw(data_points, struct(%Sparklinex.Smooth.Options{}, opts))
+  def smooth(data_points, opts \\ %Smooth.Options{}) do
+    Smooth.draw(data_points, opts)
   end
 
   @doc """
   """
-  def bar(data_points, opts \\ %{}) do
-    Sparklinex.Bar.draw(data_points, struct(%Sparklinex.Bar.Options{}, opts))
+  def bar(data_points, opts \\ %Bar.Options{}) do
+    Bar.draw(data_points, opts)
   end
 
   @doc """
   """
-  def bullet(data = %{value: _, good: _}, opts \\ %{}) do
-    Sparklinex.Bullet.draw(data, struct(%Sparklinex.Bullet.Options{}, opts))
+  def bullet(data = %{value: _, good: _}, opts \\ %Bullet.Options{}) do
+    Bullet.draw(data, opts)
+  end
+
+  @doc """
+  """
+  def whisker(data, opts \\ %Whisker.Options{}) do
+    Whisker.draw(data, opts)
   end
 
   @doc """
