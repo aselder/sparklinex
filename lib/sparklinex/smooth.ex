@@ -95,12 +95,11 @@ defmodule Sparklinex.Smooth do
     adjusted_target_value = height - 3 - norm_value / (101.0 / (height - 4))
 
     canvas
-    |> MogrifyDraw.set_line_color(color)
-    |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}})
+    |> MogrifyDraw.draw_line({{-5, adjusted_target_value}, {width + 5, adjusted_target_value}}, color)
   end
 
   defp draw_min(canvas, coords, %Options{has_min: true, min_color: color}) do
-    min_point = Enum.min_by(coords, fn {_x, y} -> y end)
+    min_point = Enum.min_by(coords, fn {_x, y} -> -y end)
     MogrifyDraw.draw_box(canvas, min_point, 2, color)
   end
 
@@ -109,7 +108,7 @@ defmodule Sparklinex.Smooth do
   end
 
   defp draw_max(canvas, coords, %Options{has_max: true, max_color: color}) do
-    max_point = Enum.max_by(coords, fn {_x, y} -> y end)
+    max_point = Enum.max_by(coords, fn {_x, y} -> -y end)
     MogrifyDraw.draw_box(canvas, max_point, 2, color)
   end
 

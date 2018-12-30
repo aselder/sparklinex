@@ -92,6 +92,16 @@ defmodule Mix.Tasks.ExampleTest do
     })
     |> graph_to_file("#{@output_dir}/smooth_similar_nonzero_values.png")
 
+    1..200
+    |> Enum.map(fn x -> x / 100 end)
+    |> Enum.to_list()
+    |> graph(%{
+      type: :smooth,
+      height: 30,
+      has_last: true
+    })
+    |> graph_to_file("#{@output_dir}/smooth_with_decimals.png")
+
     quick_graph(
       "standard_deviation",
       %{
@@ -211,6 +221,69 @@ defmodule Mix.Tasks.ExampleTest do
       width: 200
     })
     |> graph_to_file("#{@output_dir}/bullet_wide.png")
+
+    ### Whisker graphs
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+    |> graph(%{
+      type: :whisker
+    })
+    |> graph_to_file("#{@output_dir}/whisker_non_exceptional.png")
+
+    ### Whisker graphs
+    [
+      0,
+      0,
+      0,
+      -1,
+      0,
+      -1,
+      1,
+      0,
+      1,
+      -2,
+      0,
+      1,
+      -2,
+      -2,
+      -1,
+      0,
+      0,
+      0,
+      2,
+      1,
+      2,
+      0,
+      -1,
+      -2,
+      2,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      2,
+      -1,
+      2,
+      0,
+      -1,
+      2,
+      2,
+      -2,
+      -2,
+      -1
+    ]
+    |> graph(%{
+      type: :whisker
+    })
+    |> graph_to_file("#{@output_dir}/whisker.png")
+
+    ### Whisker graphs
+    List.duplicate(1, 40)
+    |> graph(%{
+      type: :whisker,
+      step: 5
+    })
+    |> graph_to_file("#{@output_dir}/whisker_with_step.png")
 
     # Create the HTML report
     write_html()

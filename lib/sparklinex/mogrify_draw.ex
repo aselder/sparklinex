@@ -15,6 +15,12 @@ defmodule Sparklinex.MogrifyDraw do
     )
   end
 
+  def draw_line(canvas, {{x1, y1}, {x2, y2}}, color) do
+    canvas
+    |> set_line_color(color)
+    |> draw_line({{x1, y1}, {x2, y2}})
+  end
+
   def draw_lines(canvas, coord_pairs) do
     Enum.reduce(coord_pairs, canvas, fn {p1, p2}, canvas -> draw_line(canvas, {p1, p2}) end)
   end
