@@ -92,6 +92,16 @@ defmodule Mix.Tasks.ExampleTest do
     })
     |> graph_to_file("#{@output_dir}/smooth_similar_nonzero_values.png")
 
+    1..200
+    |> Enum.map(fn x -> x / 100 end)
+    |> Enum.to_list()
+    |> graph(%{
+      type: :smooth,
+      height: 30,
+      has_last: true
+    })
+    |> graph_to_file("#{@output_dir}/smooth_with_decimals.png")
+
     quick_graph(
       "standard_deviation",
       %{
